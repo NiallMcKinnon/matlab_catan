@@ -1,0 +1,38 @@
+%{
+
+    Catan, in MATLAB!
+    Created by: Niall McKinnon
+    
+    This was originally a final project for an intro to MATLAB course in
+    college. I have begun rafactoring and maintaining it in order to keep
+    a working knowldge of MATLAB syntax.
+
+    This is meant to be fun, MATLAB is absolutely awful fo
+
+%}
+
+clc;
+clear;
+close all;
+format compact;
+rng shuffle;
+
+% Generate Map:
+
+radius = 5;
+xSpacing = 2 * (sqrt(3)/2 * radius);
+ySpacing = radius + radius / 2;
+
+radiusOcean = 25;
+theta = linspace(0, 360, 7);
+xCircle = radiusOcean * cosd(theta) + 3 * xSpacing;
+yCircle = radiusOcean * sind(theta);
+% fill(xCircle, yCircle, [0 191 255]/255);
+% axis off;
+% hold on;
+% axis equal;
+
+% coordMap = cell(21, 23);
+
+map = readcell('map.csv');
+
