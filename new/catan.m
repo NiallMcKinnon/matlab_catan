@@ -1,35 +1,58 @@
-clc;
-clear;
-rng shuffle;
+classdef catan
+    %UNTITLED4 Summary of this class goes here
+    %   Detailed explanation goes here
 
-% Create a UI window:
-windowWidth = 800;
-window = uifigure(Name="Catan", Units="pixels", Position=[100, 100, windowWidth, windowWidth]);
+    properties
+        Property1
+    end
 
-% Create panel for the game board:
-boardWidth = windowWidth / 2;
-board = uipanel(window, Units="pixels", Position=[0, boardWidth, boardWidth, boardWidth], BackgroundColor=[0 191 255]/255);
+    methods
+        function obj = catan()
 
-% Create a plot for the map:
-map = uiaxes(Parent=board, Position=[-8, 0, boardWidth, boardWidth]);
+            windowWidth = 800;
+            window = uifigure(Name="Catan", Units="pixels", Position=[100, 100, windowWidth, windowWidth]);
+            
+            % Create panel for the game board:
+            boardWidth = windowWidth / 2;
+            board = uipanel(Parent=window, Units="pixels", Position=[0, boardWidth, boardWidth, boardWidth], BackgroundColor=[0 191 255]/255);
+            
+            % Create a plot for the map:
+            map = uiaxes(Parent=board, Position=[-8, 0, boardWidth, boardWidth]);
+            
+            % Adjust plot settings:
+            map.Toolbar.Visible = "off";
+            map.Interactions = dataTipInteraction;
+            axis(map, "off");
+            hold(map, "on");
+            axis(map, "equal");
+            
+            % map.Position = [0, 0, boardWidth, boardWidth];
+            [matrixMap, xNumberMap, yNumberMap, diceMap] = plotMap(map);
+            
+            % canBuild arrays keep track of where things can be built:
+            canBuildRoad = NaN(23, 21);
+            canBuildSettlement = NaN(23, 21);
+            
+            % victoryPoints stores the victory points of each player:
+            victoryPoints = zeros(1, 2);
+            
+            % resourceScoreboard keeps track of the players' resources:
+            resourceScoreboard = zeros(2, 6);
+            
+            % Panel for player actions:
+            actions = uipanel(Parent=window, Position=[boardWidth, 0, boardWidth, boardWidth]);
+            % global counter 
+            counter = 0;
+            testButton = uibutton(Parent=actions,...
+                                  Position=[100, 100, 100, 50],...
+                                  ButtonPushedFcn=@(testButton, event) testButtonCallback(testButton, counter));
 
-% Adjust plot settings:
-map.Toolbar.Visible = "off";
-disableDefaultInteractivity(map); % This line may need to be removed
-axis(map, "off");
-hold(map, "on");
-axis(map, "equal");
+        end
 
-% map.Position = [0, 0, boardWidth, boardWidth];
-[matrixMap, xNumberMap, yNumberMap, diceMap] = plotMap(map);
-
-% canBuild arrays keep track of where things can be built:
-canBuildRoad = NaN(23, 21);
-canBuildSettlement = NaN(23, 21);
-
-% victoryPoints stores the victory points of each player:
-victoryPoints = zeros(1, 2);
-
-% resourceScoreboard keeps track of the players' resources:
-resourceScoreboard = zeros(2, 6);
-
+        function outputArg = method1(obj,inputArg)
+            %METHOD1 Summary of this method goes here
+            %   Detailed explanation goes here
+            outputArg = obj.Property1 + inputArg;
+        end
+    end
+end
