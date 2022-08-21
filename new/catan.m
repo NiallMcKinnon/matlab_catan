@@ -25,8 +25,7 @@ axis(map, "equal");
 
 setappdata(0, "matrixMap", matrixMap);
 
-test = 0;
-setappdata(0, "test", test);
+setappdata(0, "test", 0);
 
 % canBuild arrays keep track of where things can be built:
 canBuildRoad = NaN(23, 21);
@@ -40,8 +39,19 @@ resourceScoreboard = zeros(2, 6);
 
 % Panel for player actions:
 actions = uipanel(Parent=window, Position=[boardWidth, 0, boardWidth, boardWidth]);
-% global counter 
-counter = 0;
+
+% Get the number of players from user input:
+% nPlayers = inputdlg("Enter number of players:");
+nPlayers = 2; % DEBUG
+
+% Create an array of players:
+players = player.empty(0, nPlayers);
+for idx = 1:nPlayers
+%     players(end+1) = player(idx)
+    players(idx) = player(idx);
+end
+
+
 
 testButton = uibutton(Parent=actions,...
                       Position=[100, 100, 100, 50],...
@@ -50,7 +60,6 @@ testButton = uibutton(Parent=actions,...
 function testButtonCallback(~)
 
     setappdata(0, "test", getappdata(0, "test")+1);
-
     fprintf("%d", getappdata(0, "test"));
 end
 
