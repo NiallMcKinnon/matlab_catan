@@ -23,10 +23,10 @@ axis(map, "equal");
 % map.Position = [0, 0, boardWidth, boardWidth];
 [matrixMap, xNumberMap, yNumberMap, diceMap] = plotMap(map);
 
-setappdata(window, "matrixMap", matrixMap);
+setappdata(0, "matrixMap", matrixMap);
 
 test = 0;
-setappdata(window, "test", test);
+setappdata(0, "test", test);
 
 % canBuild arrays keep track of where things can be built:
 canBuildRoad = NaN(23, 21);
@@ -42,17 +42,16 @@ resourceScoreboard = zeros(2, 6);
 actions = uipanel(Parent=window, Position=[boardWidth, 0, boardWidth, boardWidth]);
 % global counter 
 counter = 0;
+
 testButton = uibutton(Parent=actions,...
                       Position=[100, 100, 100, 50],...
-                      ButtonPushedFcn=@(testButton, event) testButtonCallback(testButton, counter));
+                      ButtonPushedFcn=@(testButton, event) testButtonCallback(testButton));
 
+function testButtonCallback(~)
 
-function testButtonCallback(btn, x)
-%     global counter 
-    
-    assignin("base", "counter", x+1);
+    setappdata(0, "test", getappdata(0, "test")+1);
 
-    fprintf("%d", x);
+    fprintf("%d", getappdata(0, "test"));
 end
 
 
