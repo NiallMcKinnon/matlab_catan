@@ -4,7 +4,7 @@ rng shuffle;
 
 % Get the number of players from user input:
 % nPlayers = inputdlg("Enter number of players:");
-nPlayers = 6; % DEBUG
+nPlayers = 3; % DEBUG
 
 % Create an array of players:
 players = player.empty(0, nPlayers);
@@ -33,7 +33,7 @@ axis(map, "equal");
 
 % map.Position = [0, 0, boardWidth, boardWidth];
 [matrixMap, xNumberMap, yNumberMap, diceMap] = plotMap(map);
-setappdata(0, "matrixMap", matrixMap);
+setappdata(0, "matrixMap", matrixMap); 
 
 setappdata(0, "test", 0);
 
@@ -60,15 +60,53 @@ setappdata(0, "scoreboard", scoreboard);
 
 % Heading for actions panel:
 actionHeading = uilabel(Parent=actions,...
-                         Text=sprintf("Player %d Turn %d", 1, 1),...
-                         HorizontalAlignment='center',...
-                         Position=[(actions.Position(1, 3)/2), 100, 100, 25]);
+                         Text = sprintf("Player %d Turn %d", 1, 1),...
+                         FontSize = 30,...
+                         HorizontalAlignment = "center",...
+                         VerticalAlignment = "top",...
+                         Position = [0, (windowWidth/2)-60, windowWidth, 50]);
 setappdata(0, "actionHeading", actionHeading);
 
-testButton = uibutton(Parent=actions,...
-                      Position=[200, 50, 100, 50],...
-                      ButtonPushedFcn=@(testButton, event) endTurnCallback(testButton),...
-                      Text="End Turn");
+buttonWidth = 100;
+buttonHeight = 50;
+buttonBottom = 50;
+buttonSpacing = buttonWidth / 2;
+buttonLefts = NaN(5, 1);
+
+for idx = 1:length(buttonLefts)
+    buttonLefts(idx, 1) = (idx * buttonSpacing) + (idx * buttonWidth) - buttonWidth;
+end
+
+buildRoadButton =       uibutton(Parent = actions,...
+                                 Position = [buttonLefts(1, 1), buttonBottom, buttonWidth, buttonHeight],...
+                                 ButtonPushedFcn = @(buildRoadButton, event) buildRoadCallback(buildRoadButton),...
+                                 Text = "Build Road",...
+                                 Tooltip = "End your turn and go to the next player.");
+
+buildSettlementButton = uibutton(Parent = actions,...
+                                 Position = [buttonLefts(2, 1), buttonBottom, buttonWidth, buttonHeight],...
+                                 ButtonPushedFcn = @(buildSettlementButton, event) buildSettlementCallback(buildSettlementButton),...
+                                 Text = "Build Settlement",...
+                                 Tooltip = "End your turn and go to the next player.");
+
+buildCityButton =       uibutton(Parent = actions,...
+                                 Position = [buttonLefts(3, 1), buttonBottom, buttonWidth, buttonHeight],...
+                                 ButtonPushedFcn = @(buildCityButton, event) buildCityCallback(buildCityButton),...
+                                 Text = "Build City",...
+                                 Tooltip = "End your turn and go to the next player.");
+
+tradeButton =           uibutton(Parent = actions,...
+                                 Position = [buttonLefts(4, 1), buttonBottom, buttonWidth, buttonHeight],...
+                                 ButtonPushedFcn = @(tradeButton, event) tradeCallback(tradeButton),...
+                                 Text = "Trade Resources",...
+                                 Tooltip = "End your turn and go to the next player.");
+
+
+endTurnButton =         uibutton(Parent = actions,...
+                                 Position = [buttonLefts(5, 1), buttonBottom, buttonWidth, buttonHeight],...
+                                 ButtonPushedFcn = @(endTurnButton, event) endTurnCallback(endTurnButton),...
+                                 Text = "End Turn",...
+                                 Tooltip = "End your turn and go to the next player.");
 
 function refreshActionPanel()
     
@@ -79,6 +117,22 @@ function refreshActionPanel()
     actionHeading = getappdata(0, "actionHeading");
     actionHeading.Text = sprintf("Player %d Turn %d", currentPlayer.number, currentPlayer.turn);
     setappdata(0, "actionHeading", actionHeading);
+
+end
+
+function buildRoadCallback(~)
+
+end
+
+function buildSettlementCallback(~)
+
+end
+
+function buildCityCallback(~)
+
+end
+
+function tradeCallback(~)
 
 end
 
@@ -93,9 +147,11 @@ function endTurnCallback(~)
     
     % Get the next player:
     if currentPlayer.number < length(players)
+
         nextPlayer = players(1, (currentPlayer.number+1));
 
     else
+
         nextPlayer = players(1, 1);
     end
     
